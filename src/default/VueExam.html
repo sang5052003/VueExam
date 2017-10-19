@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-material@0.7.1"></script>
+
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app-1">
+    <ul>
+        <li v-for="item in items">
+            {{ item.message }}
+        </li>
+    </ul>
+    <!-- 바인딩 개념..동적(실시간..)으로 :뒤에 표시된 속성을 바인드해준다 -->
+    <span v-bind:title="bindTitle">동적으로 바인딩됨, 마우스오버 시 나타남</span>
+    <br>
+    <p v-if="seen">보임</p>
+    <p v-if="!seen">...</p>
+    <br>
+    <p>{{ btnMsg }}</p>
+    <!-- v-on 디렉티브 사용해서 Vue인스턴스에 메소드를 호출하는 이벤트 리스너 첨부 -->
+    <button v-on:click="reverseMessage">메시지 뒤집기</button>
+    <p>{{ modelMsg }}</p>
+    <!-- 양식에 대한 입력과 앱 상태를 양방향으로 바인딩, 위의 예제들과 반대로 뷰에서 바뀌면 앱의 상태가 바뀜 -->
+    <input v-model="modelMsg">
+    <br>
+    <!-- v-on으로 이벤트 처리 시 메소드뿐만 아니라 데이터도 직접 바인딩 가능 -->
+    <button v-on:click="count += 1">Add 1</button>
+    <p>{{ count }}</p>
+    <!-- IME가 필요한 경우 (ex:한글) 바로 화면 전환 안됨 -->
+    <input v-model="modelMsg2nd">
+    <p>메시지 : {{ modelMsg2nd }}</p>
+    <input v-on:input="typing" v-bind:value="modelMsg2nd">
+</div>
+
+<script>
+
+
+    var app1 = new Vue({
+        el: "#app-1",
+        data: {
+            items: [
+                {message: "1st"},
+                {message: "2nd"},
+                {message: "3rd"}
+            ],
+            bindTitle: "시간 : " + new Date(),
+            seen: true,
+            btnMsg: "뒤집히는 문자열",
+            modelMsg: "v-model 예제",
+            count: 1,
+            modelMsg2nd: ""
+        },
+        methods: {
+            reverseMessage: function () {
+                this.btnMsg = this.btnMsg.split("").reverse().join("");
+
+            },
+            typing: function (e) {
+                this.modelMsg2nd = e.target.value;
+            }
+        }
+    })
+
+    app1.items.push({message: "4th"});
+
+    setInterval(function () {
+        app1.seen = !app1.seen;
+    }, 1000);
+
+    setTimeout(function () {
+        app1.items.push({message: "5th"});
+    }, 2000);
+
+
+</script>
+</body>
+</html>
