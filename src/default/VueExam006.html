@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-for와 배열변경 및 감지</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+
+<div id="app-1">
+    <ul>
+        <!-- v-for 블록 안에는 부모 범위 속성에 대한 모든 권한이 있다.
+        v-for는 또한 현재 항목의 인덱스에 대한 두 번째 전달인자 옵션을 제공 -->
+        <!-- in == of, template사용 가능 -->
+        <li v-for="(item, index) in items">
+            {{parentMsg}} - {{index}} - {{item.msg}}
+        </li>
+        <br>
+        <!-- 객체의 속성을 반복할 수도 있다 -->
+        <li v-for="value in object">{{value}}</li>
+        <br>
+        <li v-for="(value, index, key) in object">v : {{value}} - idx : {{index}} - key : {{key}}</li>
+    </ul>
+
+    <!-- 같은 노드에 존재할 때, v-for는 v-if보다 더 높은 우선 순위를 가진다  -->
+    <li v-for="todo in todos" v-if="!todo.isComplete" :key="todo.id">
+        {{ todo.msg }}
+    </li>
+    <!-- Vue가 각 노드의 ID를 추적하고 기존 엘리먼트를 재사용하고 재정렬할 수 있도록 힌트를 제공하려면
+     각 항목에 고유한 key 속성을 제공해야 한다 -->
+    <!-- 속성처럼 작동하기 때문에 v-bind를 사용하여 동적 값에 바인딩 해야한다 -->
+</div>
+
+<body>
+
+<!--push()-->
+<!--pop()-->
+<!--shift()-->
+<!--unshift()-->
+<!--splice()-->
+<!--sort()-->
+<!--reverse()-->
+
+<!--이름에서 알 수 있듯 변이 메소드는 호출된 원본 배열을 변형합니다.
+이와 비교하여 변형을 하지 않는 방법도 있습니다.
+바로 filter(), concat() 와 slice() 입니다.
+ 이 방법을 사용하면 원본 배열을 변형하지 않고 항상 새 배열을 반환-->
+
+<!--JavaScript의 제한으로 인해 Vue는 배열에 대해 다음과 같은 변경 사항을 감지할 수 없습니다.-->
+<!--인덱스로 배열에 있는 항목을 직접 설정하는 경우, 예: vm.items[indexOfItem] = newValue-->
+<!--배열 길이를 수정하는 경우, 예: vm.items.length = newLength-->
+
+<!--// Vue.set-->
+<!--Vue.set(example1.items, indexOfItem, newValue)-->
+<!--// Array.prototype.splice-->
+<!--example1.items.splice(indexOfItem, 1, newValue)-->
+<!--example1.items.splice(newLength) 길이수정 -->
+
+
+<script>
+
+    var todos = [
+        {isComplete: true, msg: 'xxx1', id: 0},
+        {isComplete: false, msg: 'yyy2', id: 1},
+        {isComplete: true, msg: 'zzz3', id: 2}
+    ]
+
+    var app1 = new Vue({
+        el: "#app-1",
+        data: {
+            parentMsg: "부모 메시지",
+            items: [
+                {msg: "메시지1"},
+                {msg: "메시지2"}
+            ],
+            object: {
+                firstName: 'sangki',
+                lastName: 'Kim',
+                age: '32'
+            },
+            todos: todos
+        }
+    })
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>객체변경감지 주의사항</title>
+</head>
+<script src="https://unpkg.com/vue"></script>
+<body>
+
+<div id="vm-1">
+    <p>{{userProfile}}</p>
+    <br>
+    <li v-for="n in even(numbers)">{{ n }}</li>
+</div>
+
+<script>
+
+    var vm = new Vue({
+        el: "#vm-1",
+        data: {
+            userProfile: {
+                name: 'Anika'
+            },
+            numbers: [1, 2, 3, 4, 5]
+        },
+        //  arry.filter - 콜백 함수에 지정된 조건을 충족하는 배열의 요소를 반환
+        methods: {
+            even: function (arr) {
+                return arr.filter(function (n) {
+                    return n % 2 === 0
+                })
+            }
+        }
+    })
+
+    //반응형으로 속성 추가
+    Vue.set(vm.userProfile, 'age', 27) //전역 메소드
+    //    this.$set(this.userProfile, 'age', 27) 인스턴스 메소드
+
+    Object.assign(vm.userProfile, {
+        antiage: 57,
+        color: 'red'
+    })
+
+    vm.userProfile = Object.assign({}, vm.userProfile, {
+        hobby: 'ball',
+        favoriteColor: 'Vue Green'
+    })
+
+
+
+</script>
+</body>
+</html>

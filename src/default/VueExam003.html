@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ComputedExam</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<div id="exam-1">
+    <p>원래 : "{{msg}}"</p>
+    <p>뒤집힌1 : "{{ reverseMsg }}"</p>
+    <p>뒤집힌2 : "{{ funcReverseMsg() }}"</p>
+    watch : {{ fullName }}
+    <br>
+    computed : {{ fullName2 }}
+    <br>
+    computed setter : {{ fullName3 }}
+</div>
+
+<script>
+
+    //
+    var vm = new Vue({
+        el: "#exam-1",
+        data: {
+            msg : "안녕하세요",
+            firstName: 'Sangki',
+            lastName: 'Kim',
+            fullName: 'Sangki Kim'
+        },
+        computed: {
+            //계산된 getter
+            reverseMsg: function () {
+                return this.msg.split("").reverse().join("")
+            },
+            fullName2: function () {
+                return this.firstName + ' ' + this.lastName
+            },
+            //getter, setter설정
+            fullName3: {
+                get: function () {
+                    return this.firstName + ' ' + this.lastName
+                },
+                set: function (newValue) {
+                    var names = newValue.split(' ')
+                    this.firstName = names[0]
+                    this.lastName = names[names.length - 1]
+                }
+            }
+        },
+        methods: {
+            funcReverseMsg: function () {
+                return this.msg.split("").reverse().join("")
+            }
+        },
+        watch: {
+            firstName: function (e) {
+                this.fullName = e + ' ' + this.lastName
+            },
+            lastName: function (e) {
+                this.fullName = this.firstName + ' ' + e
+            }
+        }
+    })
+
+    //vm.reverseMsg는 vm.msg에 항상 의존(선언적 의존 관계)
+
+    //method로 동일한 결과값을 얻지만,
+    //computed는 종속성에 따라 캐싱 된다
+    // 메소드 호출은 재 렌더링 할 때마다 항상 메소드를 호출
+
+    // 다른 데이터 기반으로 변경할 필요가 있는 데이터가 있는 경우 watch()사용 가능
+
+</script>
+</body>
+</html>
