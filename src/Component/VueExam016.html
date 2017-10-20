@@ -20,15 +20,50 @@ $emit(eventName)을 사용하여 이벤트를 트리거 하십시오.
 
 <body>
 
+<!--하위 컴포넌트가 외부에서 발생 하는 것과 완전히 분리 된다-->
+<!--부모 인스턴스 data변동이 자식에게 no effect-->
 <div id="app-1">
-
+    <p>{{total}}</p>
+    <!-- v-on으로 emit이라는 메소드로 등록한 자식의 'increment'와 부모의 incrementTotal을 바인딩 -->
+    <button-counter v-on:increment="incrementTotal"></button-counter>
+    <button-counter v-on:increment="incrementTotal"></button-counter>
 </div>
 
 <script>
+
+    Vue.component('buttonCounter', {
+        template: '<button v-on:click="incrementCounter">{{counter}}</button>',
+        data: function () {
+            return {
+                counter: 0
+            }
+        },
+        methods: {
+            incrementCounter: function(){
+                this.counter += 1
+                this.$emit('increment')
+            }
+        }
+    })
+
     var app1 = new Vue({
-        el: "#app-1"
+        el: "#app-1",
+        data: {
+            total: 0
+        },
+        methods: {
+            incrementTotal: function () {
+                this.total+= 1
+            }
+        }
     })
 </script>
+<!--
+컴포넌트의 루트 엘리먼트에서 네이티브 이벤트를 수신하려는 경우가 있을 수 있다.
+이러한 경우 v-on 에 .native 수식자를 사용할 수 있다.
+<my-component v-on:click.native="doTheThing"></my-component>
+-->
+
 
 </body>
 </html>
