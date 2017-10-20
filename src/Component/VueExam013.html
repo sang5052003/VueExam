@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>props</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+
+<div id="app-1">
+    <!--
+     vue인스턴스 app1(부모)에서 child component(자식)로 myMessage props을 통해 데이터 전달
+     문자열이 아닌 템플릿을 사용할 때 camelCased prop 이름에 해당하는 kebab-case(하이픈 구분)를 사용
+     myMessage -> my-message
+     -->
+    <child my-message="안녕"></child>
+
+    <!-- 동적 props -->
+    <!-- v-bind를 사용하여 부모의 데이터에 props를 동적으로 바인딩, 데이터가 상위에서 업데이트 될 때마다 하위 데이터로도 전달 -->
+    <input v-model="parentMsg">
+    <br>
+    <child :my-message="parentMsg"></child>
+
+    <!-- 객체의 모든 속성을 props로 전달하려면, 인자없이 v-bind를 쓸 수 있다 -->
+    {{msg}}
+    <br>
+    <todocomp :todo-props='todo'></todocomp>
+    <!-- todo props에 todo객체를 집어넣는다 -->
+
+    <!-- 리터럴 prop이기 때문에 그 값은 실제 숫자가 아닌 일반 문자열 "1" 로 전달,
+     실제 JavScript 숫자를 전달하려면 값이 JavaScript 표현식으로 평가되도록 v-bind를 사용 -->
+</div>
+
+<script>
+
+    Vue.component('child', {
+        props: ['myMessage'],
+        template: '<span>{{myMessage}}</span>'
+    })
+
+    Vue.component('todocomp', {
+        props: ['todoProps'],
+        template: '<span v-if="todoProps.isComplete">{{todoProps.text}}</span>'
+    })
+
+    var app1 = new Vue({
+        el: "#app-1",
+        data: {
+            parentMsg: "",
+            msg: "asdf",
+            todo: {
+                text: 'Learn Vue',
+                isComplete: false
+            }
+        }
+    })
+
+</script>
+
+</body>
+</html>

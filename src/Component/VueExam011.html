@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DOM 템플릿 구문 분석 경고</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<!--
+<ul>,<ol>,<table>과<select>와 같은 일부 엘리먼트는 그 안에 어떤 엘리먼트가 나타날 수 있는지에 대한 제한을 가지고 있으며,
+<option>과 같이 특정 다른 엘리먼트 안에만 나타날 수 있다
+-->
+
+<body>
+
+<!--
+사용자 지정 컴포넌트 <my-row> 는 잘못 된 컨텐츠가 되어, 결과적으로 렌더링시 에러를 발생시킵니다.
+해결 방법은 is 특수 속성을 사용하는 것입니다 :-->
+
+<div id="app-1">
+    <table>
+        <my-row>...</my-row>
+    </table>
+    <table>
+        <tr is="my-row"></tr>
+    </table>
+</div>
+
+<!--다음 소스 중 하나에 포함되면 문자열 템플릿을 사용하는 경우에는 이러한 제한 사항이 적용되지 않습니다.:-->
+<!--
+<script type="text/x-template">
+JavaScript 인라인 템플릿 문자열
+.vue 컴포넌트
+따라서 가능한 경우 항상 문자열 템플릿을 사용하는 것이 좋습니다
+-->
+
+<script>
+//    <!--루트 Vue 인스턴스를 인스턴스화하기 전에 컴포넌트가 등록-->
+    Vue.component('my-row', {
+        template: '<div>사용자 정의 컴포넌트</div>'
+    })
+
+    new Vue({
+        el: "#app-1"
+    })
+
+
+</script>
+
+</body>
+</html>

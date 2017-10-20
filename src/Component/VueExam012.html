@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>component의 data옵션은 함수</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+
+<div id="app-1">
+    <simple-counter></simple-counter>
+    <simple-counter></simple-counter>
+    <simple-counter></simple-counter>
+</div>
+
+<script>
+
+    //  The "data" option should be a function that returns a per-instance value in component definitions.
+    Vue.component('error-comp', {
+        template: '<span>{{msg}}</span>',
+        data: {
+            msg: 'hi'
+        }
+    })
+
+    //data를 return하면 같은 인스턴스 참조가 일어나므로 return으로 새로운 임시객체 반환
+    var data = {counter: 0}
+
+    Vue.component('simple-counter', {
+        template: '<button v-on:click="counter += 1">{{counter}}</button>',
+        data: function () {
+            return {
+                counter: 0
+            }
+        }
+    })
+
+    var app1 = new Vue({
+        el: "#app-1"
+    })
+
+</script>
+
+</body>
+</html>
