@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>동적 컴포넌트</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<!--
+같은 마운트 포인트를 사용하고 예약된 <component> 엘리먼트를 사용하여
+여러 컴포넌트 간에 동적으로 전환하고 is 속성에 동적으로 바인드 할 수 있다
+-->
+
+<body>
+
+<div id="app-1">
+    <comeponent v-bind:is="currentView"></comeponent>
+</div>
+
+<script>
+
+    var World = {
+        template: '<p>welcome world</p>'
+    }
+
+    var app1 = new Vue({
+        el: "#app-1",
+        data: {
+//            currentView: 'home'
+            currentView: World
+        },
+        components: {
+            home: { template: '<p>welcome home</p>' },
+            posts: { template: '<p>welcome posts</p>' },
+            archive: { template: '<p>welcome archive</p>' }
+        }
+    })
+</script>
+
+<!--
+캐싱
+전환된 컴포넌트를 메모리에 유지하여 상태를 보존하거나
+다시 렌더링하지 않도록 동적 컴포넌트를 <keep-alive> 엘리먼트에 래핑 할 수 있다
+<keep-alive>
+    <component :is="currentView">
+    비활성화 된 컴포넌트는 캐시 됩니다!
+    </component>
+</keep-alive>
+-->
+
+</body>
+</html>

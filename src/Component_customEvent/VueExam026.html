@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>범위를 가지는 슬롯</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<!--
+범위가 지정된 슬롯은 이미 렌더링 된 엘리먼트 대신
+재사용 가능한 템플릿(데이터를 전달할 수 있음)으로 작동하는 특별한 유형의 슬롯
+prop을 컴포넌트에게 전달하는 것처럼
+하위 컴포넌트에서 단순히 데이터를 슬롯에 전달하면 됩니다
+-->
+<body>
+
+<div id="app-1">
+    <child :items="items">
+        <template slot="item" slot-scope="props">
+            <li>{{props.text}}</li>
+        </template>
+    </child>
+</div>
+
+<script>
+
+    Vue.component('child', {
+        template: '\
+        <ul>\
+        <slot name="item"\
+        v-for="item in items"\
+        :text="item.text">"대체컨텐츠 위치"</slot>\
+        </ul>',
+        props: ["items"]
+    })
+
+    var app1 = new Vue({
+        el: "#app-1",
+        data: {
+            items: [
+                {text: "t1"},
+                {text: "t2"},
+                {text: "t3"}
+            ]
+        }
+    })
+</script>
+
+<!-- 부모에서, 특별한 속성 scope을 가진 <template>엘리먼트가 존재해야 합니다
+이것은 범위를 가지는 슬롯을 위한 템플릿임을 나타냅니다
+scope의 값은 자식으로부터 전달 된 props 객체를 담고있는 임시 변수의 이름이다 -->
+
+<!-- 범위가 지정된 슬롯의 일반적인 사용 사례는
+컴포넌트 사용자가 목록의 각 항목을 렌더링하는 방법을 사용자 지정할 수 있는
+리스트 컴포넌트-->
+
+</body>
+</html>

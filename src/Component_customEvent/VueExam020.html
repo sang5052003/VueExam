@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>컴포넌트의 v-model 사용자 정의</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<!--
+기본적으로 컴포넌트의 v-model은 value를 보조 변수로 사용하고 input을 이벤트로 사용
+,그러나 체크 박스와 라디오 버튼과 같은 일부 입력 타입은 다른 목적으로 value 속성을 사용할 수 있다.
+model 옵션을 사용하면 다음 경우에 충돌을 피할 수 있다:
+-->
+
+<div id="app-1">
+    <my-check v-model="foo" value="some value"></my-check>
+    <!-- 위와 동일 -->
+    <my-check :checked="foo"
+              @change="val => {foo = val}"
+              value="some value"></my-check>
+</div>
+
+<script>
+
+    Vue.component('my-check', {
+        model: {
+            prop: 'checked',
+            event: 'change'
+        },
+        props: {
+            checked: Boolean,
+            value: String
+        },
+        template: '<span>{{value}}</span>'
+    })
+
+    var app1 = new Vue({
+        el: "#app-1",
+        data: {
+            foo: true
+        }
+    })
+</script>
+
+</body>
+</html>

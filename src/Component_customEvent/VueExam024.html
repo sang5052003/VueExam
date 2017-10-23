@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>단일 슬롯</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<!--
+하위 컴포넌트 템플릿에 최소한 하나의 <slot> 콘텐츠가 포함되어 있지 않으면
+부모 콘텐츠가 삭제
+속성이 없는 슬롯이 하나 뿐인 경우 전체 내용 조각이 DOM의 해당 위치에 삽입되어
+슬롯 자체를 대체
+-->
+
+<!-- 원래 <slot> 태그 안에 있는 내용은 대체 콘텐츠 로 간주
+대체 콘텐츠는 하위 범위에서 컴파일되며 호스팅 엘리먼트가 비어 있고
+삽입할 콘텐츠가 없는 경우에만 표시 -->
+
+<body>
+
+<div id="app-1">
+    <h1>부모 컴포넌트 제목</h1>
+    <child-comp>
+        <p>원본 컨텐츠1</p>
+        <p>원본 컨텐츠2</p>
+    </child-comp>
+</div>
+
+<script>
+
+    Vue.component('child-comp', {
+        template: '\
+        <div>\
+        <h2>자식 컴포넌트 제목</h2>\
+        <slot>제공된 컨텐츠가 없을 경우만 볼 수 있다</slot>\
+        </div>'
+    })
+
+    var app1 = new Vue({
+        el: "#app-1"
+    })
+</script>
+
+</body>
+</html>
