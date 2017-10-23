@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>VueExam002</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="app-1">
+        <p>내용 : {{ msg }}</p>
+        
+        <ol>
+            <todo-item></todo-item>
+        </ol>
+
+        <!-- 각 구성요소에 key를 전달 해야 한다 -->
+        <ol>
+            <todo-item2
+                v-for="item in list"        
+                v-bind:todo="item"
+                v-bind:key="item.id">        
+            </todo-item2>
+        </ol>
+        
+    </div>
+    
+    <script>
+        /* component는 미리 정의된 옵션을 가진 Vue인스턴스 */
+        Vue.component('todo-item', {
+            template: '<li>할일 항목 하나</li>'
+        })
+
+        /* 부모영역의 데이터를 자식 컴포넌트에 집어 넣을 수 있도록
+        props를 정의, props을 통해 사용자정의 속성을 입력 받을 수 있다
+         */
+        Vue.component('todo-item2', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
+        
+        var app1 = new Vue({
+            el: "#app-1",
+            data: {
+                msg: "메시지",
+                list: [
+                    { id: 0, text: 'list01'},
+                    { id: 1, text: 'list02'},
+                    { id: 2, text: 'list03'}
+                ]
+            }
+        })
+    </script>
+</body>

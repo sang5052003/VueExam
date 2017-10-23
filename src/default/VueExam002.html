@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VueExam002</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<script>
+
+    //data객체 생성
+    var data = { a: 1 }
+
+    //vue인스턴스에 data객체를 추가
+    var vm = new Vue({
+        data: data
+    })
+
+    //같은 객체 참조
+    vm.a === data.a;
+    vm.a = 2; //data.a도 동일(얕은 복사)
+
+    //data속성이 인스턴스 생성 시, 있었다면 반응형이다
+    //반응형 : 데이터 변경 시 다시 랜더링
+
+    //새 속성 추가 시, 반응형이 아니다
+    vm.b = 'hi'
+
+    //인스턴스 속성 및 메소드들은 $로 표시
+    //vm$.data = data;
+    //vm$.el, vm$watch()..
+
+    //라이프 사이클
+    //created, mounted, updated, destroyed
+    var vm2 = new Vue({
+        data: {
+            a: 1
+        },
+        created: function () {
+            console.log("a is : " + this.a)
+        }
+    })
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>사용자정의 이벤트를 사용한 폼입력 컴포넌트 2번째</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.rawgit.com/chrisvfritz/5f0a639590d6e648933416f90ba7ae4e/raw/974aa47f8f9c5361c5233bd56be37db8ed765a09/currency-validator.js"></script>
+</head>
+<body>
+
+<div id="app-1">
+    <currency-input
+        label="Price"
+        v-model="price"></currency-input>
+    <currency-input
+            label="Shipping"
+            v-model="shipping"></currency-input>
+    <currency-input
+            label="Handling"
+            v-model="handling"></currency-input>
+    <currency-input
+            label="Discount"
+            v-model="discount"></currency-input>
+
+    <p>Total : ${{total}}</p>
+
+</div>
+
+<script>
+
+//    blur event occurs when the <input> field loses focus
+//    포커스 잃을 대 발생
+
+    Vue.component('currency-input', {
+        template: '\
+        <div>\
+        <label v-if="label">{{label}}</label>\
+        $\
+        <input\
+        ref="input"\
+         v-bind:value="value"\
+         v-on:input="updateValue($event.target.value)"\
+         v-on:focus="selectAll"\
+         v-on:blur="formatValue"\
+         >\
+         </div>',
+        props:  {
+            value: {
+                type: Number,
+                default: 0
+            },
+            label: {
+                type: String,
+                default: ''
+            }
+        },
+//        el이 새로 생성된 vm.$el로 대체된 인스턴스가 마운트 된 직후 호출(라이프 사이클)
+//        mounted는 모든 자식 컴포넌트가 마운트 된 상태를 보장하지 않습니다.
+        mounted: function () {
+            this.formatValue()
+        },
+        methods: {
+            updateValue: function (value) {
+                var result = currencyValidator.parse(value,  this.value)
+                if (result.warning){
+                    this.$refs.input.value = result.value
+                }
+                this.$emit('input', result.value)
+            },
+            formatValue: function () {
+                this.$refs.input.value = currencyValidator.format(this.value)
+            },
+            selectAll: function (event) {
+                setTimeout(function () {
+                    event.target.select() //select이벤트 발생(input칸 전체 선택)
+                }, 0)
+            }
+        }
+    })
+
+    var app1 = new Vue({
+        el: "#app-1",
+        data: {
+            price: 0,
+            shipping: 0,
+            handling: 0,
+            discount: 0
+        },
+        computed: {
+            total: function () {
+//                return 이후에 개행 때문에 값이 안나옴..
+                return ((this.price * 100 +
+                this.shipping * 100 +
+                this.handling * 100 -
+                this.discount * 100) / 100).toFixed(2)
+            }
+        },
+        methods: {
+            totalFunc: function () {
+                return ((this.price * 100 +
+                    this.shipping * 100 +
+                    this.handling * 100 -
+                    this.discount * 100) / 100).toFixed(2)
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

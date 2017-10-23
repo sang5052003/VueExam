@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>폼 입력 바인딩</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<div id="app">
+    <p style="white-space: pre-line">{{msg}}</p>
+    <br>
+    <!--IME 방지용-->
+    <textarea v-on:input="typing" v-bind:value="msg"></textarea>
+    <!--<textarea v-model="msg"></textarea>-->
+    <!--textarea는 보간을 지원하지 않는다-->
+    <br>
+    <input type="checkbox" id="jack" value="jack" v-model="checkNames">
+    <label for="jack">jack</label>
+    <input type="checkbox" id="jone" value="jone" v-model="checkNames">
+    <label for="jone">jone</label>
+    <input type="checkbox" id="gill" value="gill" v-model="checkNames">
+    <label for="gill">gill</label>
+    <br>
+    <span>체크드 name : {{checkNames}}</span>
+
+    <br>
+    <select v-model="selected">
+        <option disabled value="">Select One</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    <span>선택함 : {{selected}}</span>
+
+    <br>
+    <!--다중 셀렉트 바인딩-->
+    <select v-model="selectedArr" multiple>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    <span>선택함 : {{selectedArr}}</span>
+
+    <br>
+    <!--v-for를 이용한 동적 옵션 렌더링-->
+    <select v-model="selected">
+        <option v-for="option in options" v-bind:value="option.value">
+            {{option.text}}
+        </option>
+    </select>
+    <span>선택함 : {{selected}}</span>
+</div>
+
+<div id="app-2">
+<!--v-bind를 사용하면 입력 값을 문자열이 아닌 값에 바인딩-->
+<input type="checkbox" v-model="toggle"
+        v-bind:true-value="a"
+        v-bind:false-value="b">
+    <span>토글 : {{toggle}}</span>
+</div>
+
+<script>
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            msg: "",
+            checkNames: [],
+            selected: '',
+            selectedArr: [],
+            options: [
+                {text: 'one', value: 'A'},
+                {text: 'two', value: 'B'},
+                {text: 'three', value: 'C'}
+            ]
+        },
+        methods: {
+            typing: function (e) {
+                this.msg = e.target.value;
+            }
+        }
+
+    })
+
+    var app2 = new Vue({
+        el: "#app-2",
+        data: {
+            toggle: "",
+            a: true,
+            b: false
+        }
+    })
+
+    /*
+    .lazy
+    .number
+    .trim
+    * */
+
+</script>
+
+</body>
+</html>

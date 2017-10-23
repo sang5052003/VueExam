@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>비동기 컨포넌트</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+
+<body>
+
+<div id="app-1">
+
+</div>
+
+<script>
+
+
+//    Vue를 사용하면 컴포넌트 정의를 비동기식으로 해결하는
+//    팩토리 함수로 컴포넌트를 정의 할 수 있다
+//    Vue는 컴포넌트가 실제로 렌더링되어야 할 때만 팩토리 기능을 트리거하고
+//    이후의 리렌더링을 위해 결과를 캐시한다
+    Vue.component('async-example', function (resolve, reject) {
+        setTimeout(function () {
+//          컴포넌트 정의를 resolve 콜백에 전달
+            resolve({
+                template: '<div>나는 비동기다</div>'
+            })
+        }, 1000)
+    })
+
+
+// 팩토리 함수는 resolve 콜백을 받습니다.
+// 이 콜백은 서버에서 컴포넌트 정의를 가져 왔을 때 호출 되어야 합니다
+// 또한 reject (reason) 을 호출하여 로드가 실패 했음을 알릴 수 있다
+// 여기서 setTimeout 은 데모 용입니다.
+// 컴포넌트를 검색하는 방법은 전적으로 귀하에게 달려 있습니다
+// 권장되는 접근법 중 하나는 Webpack의 코드 분할 기능(https://webpack.js.org/guides/code-splitting/)과
+// 함께 비동기 컴포넌트를 사용하는 것
+    Vue.component('async-webpack-example', function (resolve) {
+
+        require(['./my-async-component'], resolve)
+    })
+
+// factory 함수에서 Promise를 반환할 수도 있습니다
+// 그래서 Webpack 2 + ES2015 구문을 사용하면 다음을 할 수 있다
+    Vue.component(
+        'async-webpack-example',
+        () => import('./my-async-component')
+    )
+
+// 지역 등록을 사용하는 경우, Promise를 반환하는 함수를 제공할 수 있다
+    var app1 = new Vue({
+        el: "#app-1"
+//        ,
+//        components: {
+//            'my-component': () => import('./my-async-component')
+//        }
+    })
+</script>
+
+<!--
+비동기 컴포넌트를 사용하려는 Browserify 사용자인 경우,
+작성자는 불행히도 비동기로드가 Browserify에서 지원하지 않는 것이라고 분명하게 주장
+합니다.
+적어도 공식적으로. Browserify 커뮤니티는 기존 및 복잡한 응용 프로그램에 도움이 될 수있는 몇 가지 해결 방법을 발견했습니다.
+다른 모든 시나리오의 경우 기본 제공되는 비동기식 지원을 위해 Webpack을 사용하는 것이 좋습니다.
+-->
+
+</body>
+</html>

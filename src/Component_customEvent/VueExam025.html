@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>이름을 가지는 슬롯</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<!--
+<slot> 엘리먼트는 특별한 속성 인 name 을 가지고 있다
+이 속성은 어떻게 내용을 배포해야 하는지를 더 커스터마이징하는 데 사용
+이름이 다른 슬롯이 여러 개 있을 수 있다
+이름을 가진 슬롯은 내용 조각에 해당 slot 속성이 있는 모든 엘리먼트와 일치
+명명되지 않은 슬롯이 하나 있을 수 있다
+기본 슬롯 은 일치하지 않는 콘텐츠의 포괄적인 컨텐츠 역할을 함
+기본 슬롯이 없으면 일치하지 않는 콘텐츠가 삭제
+-->
+
+<body>
+
+<div id="app-1">
+    <app-layout>
+        <h1 slot="header">여기에 페이지 제목이 위치합니다</h1>
+        <p>메인 컨텐츠의 단락입니다.</p>
+        <p>하나 더 있습니다.</p>
+        <p slot="footer">여기에 연락처 정보입니다.</p>
+    </app-layout>
+</div>
+
+<script>
+
+    Vue.component('app-layout', {
+        template: '\
+        <div class="container">\
+        <header>\
+        <slot name="header"></slot>\
+        </header>\
+        <main>\
+        <slot></slot>\
+        </main>\
+        <footer>\
+        <slot name="footer"></slot>\
+        </footer>\
+        </div>'
+    })
+
+    var app1 = new Vue({
+        el: "#app-1"
+    })
+</script>
+
+</body>
+</html>

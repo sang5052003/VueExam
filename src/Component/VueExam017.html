@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sync수식어</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<div id="app-1">
+
+</div>
+<!--encoding 수정중 commit7 일곱번째-->
+<script>
+    var app1 = new Vue({
+        el: "#app-1"
+    })
+</script>
+<!--
+속성에 “양방향 바인딩”이 필요
+ Vue 1버전에 있던 .sync 수식어
+ .sync를 가지는 속성을 변경하면 값의 변경이 부모에 반영(단방향 x)
+ .sync는 2.0버전에서 삭제
+ 2.3 버전에서 속성을 위한 .sync 수식어를 다시 만들었습니다.
+  자동으로 v-on로 확장되는 신택스 슈가
+-->
+
+<!--동일 코드-->
+
+<comp :foo.sync="bar"></comp>
+
+<comp :foo="bar" @update:foo="val => bar = val"></comp>
+
+<!--하위 컴포넌트가 foo를 갱신하려면 속성을 변경하는 대신 명시적으로 이벤트를 보내야-->
+this.$emit('update:foo', newValue)
+
+</body>
+</html>

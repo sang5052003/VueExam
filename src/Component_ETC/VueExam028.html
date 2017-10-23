@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>자식 컴포넌트 참조</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<!--
+props나 이벤트가 있었음에도 불구하고 때때로 JavaScript로
+하위 컴포넌트에 직접 액세스 해야 할 수도 있다
+이를 위해 ref 를 이용하여 참조 컴포넌트 ID를 자식 컴포넌트에 할당해야 합니다
+-->
+
+<body>
+
+<div id="app-1">
+    <user-profile ref="profile"></user-profile>
+</div>
+
+<!--
+ref가 v-for와 함께 사용될 때,
+얻을 수 있는 ref는 데이터 소스를 미러링하는 자식 컴포넌트를 포함하는 배열이 됨
+-->
+
+<script>
+
+    Vue.component('userProfile', {
+        template: '<span>{{childData}}</span>',
+        data: function () {
+        return {childData: "childDataContents"}
+    }
+    })
+
+    var app1 = new Vue({
+        el: "#app-1"
+    })
+
+    var child = app1.$refs.profile
+    child.data = 'dkdkdk' //노 랜더링 반응
+</script>
+
+<!--
+$refs 는 컴포넌트가 렌더링 된 후에만 채워지며 반응적이지 않다
+템플릿이나 계산 된 속성에서 $refs를 사용하지 말아야합니다.
+-->
+
+</body>
+</html>

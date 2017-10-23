@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>단방향 데이터 흐름</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+
+<div id="app-1">
+    <!-- init-props="1"  - 리터럴 prop이기 때문에 그 값은 실제 숫자가 아닌 일반 문자열 "1" 로 전달,
+         :init-props="1" - 실제 JavScript 숫자를 전달하려면 값이 JavaScript 표현식으로 평가되도록 v-bind를 사용 -->
+    <my-comp :init-props="1"></my-comp>
+    <my-comp size='BBCaff'></my-comp>
+</div>
+
+<script>
+//    prop는 초기 값을 전달 하는데만 사용되며 하위 컴포넌트는 이후에 이를 로컬 데이터 속성으로 사용하기만 합니다.
+//    prop의 초기 값을 초기 값으로 사용하는 로컬 데이터 속성
+    Vue.component('myComp', {
+        props: {
+            initProps: {},
+            size: {}
+        },
+        data: function () {
+            return {counter: this.initProps}
+        },
+        computed: {
+            nomalizeSize: function () {
+                if (this.size === undefined) return
+                return this.size.trim().toLowerCase()
+            }
+        },
+        template: '<span>{{initProps}}{{nomalizeSize}}</span>'
+    })
+
+    var app1 = new Vue({
+        el: "#app-1"
+    })
+
+</script>
+
+</body>
+</html>

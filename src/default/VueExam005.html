@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML 클래스 바인딩</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app-1">
+    <div v-if="type === 'a'">A</div>
+    <div v-else-if="type === 'b'">B</div>
+    <div v-else>C</div>
+    <h1 v-show="ok">v-show</h1>
+
+    //key값을 줘서 재사용 하지 못하도록 한다, input내용이 초기화 됨
+    <template v-if="loginType === 'username'">
+        <label>사용자 이름</label>
+        <input placeholder="사용자 이름을 입력하세요" key="username-input">
+    </template>
+    <template v-else>
+        <label>이메일</label>
+        <input placeholder="이메일 주소를 입력하세요" key="email-input">
+    </template>
+    <br>
+    <button v-on:click="toggle">로그인 타입 변경</button>
+</div>
+
+<script>
+
+    var app = new Vue({
+        el: "#app-1",
+        data: {
+            type: 'a',
+            ok: true,
+            loginType: ''
+        },
+        methods: {
+            toggle: function () {
+                return this.loginType = this.loginType === 'username' ? 'email' : 'username'
+            }
+        }
+    })
+
+//      v-show는 <template> 구문을 지원하지 않으며 v-else와도 작동하지 않습니다.
+//      일반적으로 v-if는 토글 비용이 높고 v-show는 초기 렌더링 비용이 더 높습니다.
+//      매우 자주 바꾸기를 원한다면 v-show를, 런타임 시 조건이 바뀌지 않으면 v-if를 권장합니다.
+//      v-if와 함께 사용하는 경우, v-for는 v-if보다 높은 우선순위를 갖습니다.
+</script>
+
+</body>
+</html>
