@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>고급 비동기 컴포넌트</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<div id="app-1">
+
+</div>
+
+<script>
+    var app1 = new Vue({
+        el: "#app-1"
+    })
+
+//    const AsyncComp = () => ({
+//        // 로드하는 컴포넌트입니다. 반드시 Promise이어야합니다.
+//        component: import('./MyComp.vue'),
+//        // 비동기 컴포넌트가 로드되는 동안 사용할 컴포넌트
+//        loading: LoadingComp,
+//        // 실패했을 경우 사용하는 컴포넌트
+//        error: ErrorComp,
+//        // 로딩 컴포넌트를 보여주기전 지연하는 정도. 기본값: 200ms.
+//        delay: 200,
+//        // 시간이 초과되면 에러용 컴포넌트가 표시됩니다
+//        // 기본값: Infinity.
+//        timeout: 3000
+//    })
+
+// vue-router에서 라우트 컴포넌트로 사용하는 경우 라우트 네비게이션이 발생하기전에
+// 비동기 컴포넌트가 먼저 작동하기때문에 이러한 특성은 무시 된다.
+// 라우트 컴포넌트에서 위의 문법을 사용하려면 vue-router 2.4.0 이상을 사용
+
+</script>
+
+</body>
+</html>
